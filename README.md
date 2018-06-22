@@ -7,4 +7,4 @@
   4.RESTFUL风格尝试
   5.springmvc页面传参时间格式转换
     5.1.使用@DateTimeFormat(pattern="yyyy-MM-dd")注解
-    5.2.自定义建一个Converter实现Converter<String,Date>接口，硬编码转换
+    5.2.自定义一个Converter实现Converter<String,Date>接口，硬编码转换

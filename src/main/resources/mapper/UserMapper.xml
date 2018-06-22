@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springbootdemo5.dao.UserDao" >
+    <!-- sql片段：表名 -->
+    <sql id="BASE_TABLE">
+        user
+    </sql>
+    <!-- sql片段：列名 -->
+    <sql id="BASE_COLUMN">
+      id, name, birthday
+    </sql>
+
+    <!-- 新增一个用户 -->
+    <insert id="insert" parameterType="user">
+        INSERT INTO 
+          <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="birthday != null">
+                BIRTHDAY,
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 查询所有用户 -->
+    <select id="queryAll" resultType="user">
+      SELECT 
+        <include refid="BASE_COLUMN"/>
+      FROM 
+        <include refid="BASE_TABLE"/>
+    </select>
+
+    <!-- 根据id查找一位用户 -->
+    <select id="queryById" parameterType="String" resultType="user">
+        SELECT
+          <include refid="BASE_COLUMN"/>
+        FROM
+          <include refid="BASE_TABLE"/>
+        WHERE ID = #{id}
+    </select>
+
+    <!-- 更新用户 -->
+    <update id="update" parameterType="user">
+        UPDATE
+          <include refid="BASE_TABLE"/>
+        <set>
+          <if test="name!=null">
+              NAME = #{name,jdbcType=VARCHAR},
+          </if>
+          <if test="birthday!=null">
+              BIRTHDAY = #{birthday,jdbcType=TIMESTAMP},
+          </if>
+        </set>
+        WHERE ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 删除用户 -->
+    <delete id="delete" parameterType="String">
+        DELETE FROM
+          <include refid="BASE_TABLE"/>
+        WHERE ID = #{id, jdbcType=VARCHAR}
+    </delete>
+</mapper>
